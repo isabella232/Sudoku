@@ -7,7 +7,7 @@ def printGrid(grid):
 	for row_index,row in enumerate(grid):
 		rowString = ""
 		if row_index % 3 == 0 and row_index != 0:
-			print "------|-------|-------"
+			print("------|-------|-------")
 		for index,element in enumerate(row):
 			if index % 3 == 0 and index != 0:
 				rowString += "| "
@@ -15,7 +15,7 @@ def printGrid(grid):
 				rowString += "_ "
 			else:
 				rowString += str(element) + " "
-		print rowString
+		print(rowString)
 
 # Prints out a much larger version of the current grid (empty squares contain the possibilities in the corner, '?' in the bottom right
 # means there are more than four current possibilities)
@@ -62,18 +62,18 @@ def printExpandedGrid(grid):
 				elif len(l) == 4:
 					row3 += str(l[2]) + "   " + str(l[3])
 		if r % 3 == 0 and r != 0:
-			print "##########################################################"
+			print("##########################################################")
 		elif r != 0:
-			print "------------------#-------------------#------------------"
-		print row1
-		print row2
-		print row3
+			print("------------------#-------------------#------------------")
+		print(row1)
+		print(row2)
+		print(row3)
 
 # This finds all possible values for a square by eliminating those in the box that
 # it's in, the row, and the column (naive)
 def findPossible(r_i, c_i, grid):
 	if grid[r_i][c_i] == 0:
-		possible = range(1,10)
+		possible = list(range(1,10))
 		# Row
 		for c in range(0,9):
 			e = grid[r_i][c]
@@ -85,8 +85,8 @@ def findPossible(r_i, c_i, grid):
 			if e != 0 and e in possible:
 				possible.remove(e)
 		# Box
-		for r in range(0+r_i/3*3,r_i/3*3+3):
-			for c in range(0+c_i/3*3,c_i/3*3+3):
+		for r in range(0+r_i//3*3,r_i//3*3+3):
+			for c in range(0+c_i//3*3,c_i//3*3+3):
 				e = grid[r][c]
 				if e != 0 and e in possible:
 					possible.remove(e)
@@ -96,7 +96,7 @@ def findPossible(r_i, c_i, grid):
 
 # This returns all elements in a given box
 def box(grid,r_i,c_i):
-	elems = range(1,10)
+	elems = list(range(1,10))
 	for r in range(r_i*3,r_i*3+3):
 		for c in range(c_i*3,c_i*3+3):
 			e = grid[r][c]
@@ -117,7 +117,7 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 			if len(possible) == 1:
 				if not foundMove:
 					if not silent:
-						print "(" + str(r_i+1) + "," + str(c_i+1) + ") -> " + str(possible[0]) + "  [Only possible]"
+						print("(" + str(r_i+1) + "," + str(c_i+1) + ") -> " + str(possible[0]) + "  [Only possible]")
 					grid[r_i][c_i] = possible[0]
 					foundMove = True
 
@@ -133,7 +133,7 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 							m.append((r_i,c_i))
 					if len(m) == 1 and not foundMove:
 						if not silent:
-							print "(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in row]"
+							print("(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in row]")
 						grid[m[0][0]][m[0][1]] = n
 						foundMove = True
 
@@ -146,7 +146,7 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 							m.append((r_i,c_i))
 					if len(m) == 1 and not foundMove:
 						if not silent:
-							print "(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in column]"
+							print("(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in column]")
 						grid[m[0][0]][m[0][1]] = n
 						foundMove = True
 
@@ -163,7 +163,7 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 										m.append((r,c))
 							if len(m) == 1 and not foundMove:
 								if not silent:
-									print "(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in box]"
+									print("(" + str(m[0][0]+1) + "," + str(m[0][1]+1) + ") -> " + str(n) + "  [Only in box]")
 								grid[m[0][0]][m[0][1]] = n
 								foundMove = True
 
@@ -176,8 +176,8 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 					for i in possible:
 						if not foundMove and testPossible(grid,r_i,c_i,i,depth+1,finish):
 							if not silent:
-								print depth
-								print "(" + str(r_i+1) + "," + str(c_i+1) + ") -> " + str(i) + "  [Guessing and checking]"
+								print(depth)
+								print("(" + str(r_i+1) + "," + str(c_i+1) + ") -> " + str(i) + "  [Guessing and checking]")
 							grid[r_i][c_i] = i
 							foundMove = True
 
@@ -239,18 +239,18 @@ if len(grid) == 0:
 	data = ""
 	while len(data) != 81:
 		tempGrid = []
-		data = raw_input("Type in the grid, going left to right row by row, 0 = empty: ")
+		data = input("Type in the grid, going left to right row by row, 0 = empty: ")
 		if len(data) != 81:
-			print "Not 81 characters."
+			print("Not 81 characters.")
 		else:
-			for row in xrange(0,9):
+			for row in range(0,9):
 				r = []
-				for col in xrange(0,9):
+				for col in range(0,9):
 					r.append(int(data[row*9+col]))
 				tempGrid.append(r)
 			if not isValid(tempGrid):
 				data = ""
-				print "Invalid grid."
+				print("Invalid grid.")
 				printGrid(tempGrid)
 
 
@@ -259,7 +259,7 @@ if len(grid) == 0:
 # Initialize variables
 time1 = 0
 
-c = raw_input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
+c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
 while hasMoves(grid) and (len(c) == 0 or c == "p" or c == "c" or c == "g" or c[0] == "("):
 	if c == "p":
 		printGrid(grid)
@@ -268,19 +268,19 @@ while hasMoves(grid) and (len(c) == 0 or c == "p" or c == "c" or c == "g" or c[0
 	elif c == "c":
 		time1 = time.time()
 		if not complete(grid):
-			print "Failed to complete.  Please improve algorithm. :)"
+			print("Failed to complete.  Please improve algorithm. :)")
 			#break
 	elif len(c) > 0 and c[0] == "(":
-		print findPossible(int(c[1])-1,int(c[3])-1,grid)
+		print(findPossible(int(c[1])-1,int(c[3])-1,grid))
 	else:
 		nextMove(grid)
 
 	if hasMoves(grid):
-		c = raw_input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
+		c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
 	else:
 		time2 = time.time()
 		printGrid(grid)
 		if time1 != 0:
-			print "Solved in %0.2fs!" % (time2-time1)
+			print("Solved in %0.2fs!" % (time2-time1))
 		else:
-			print "Solved!"
+			print("Solved!")
