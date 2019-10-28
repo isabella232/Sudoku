@@ -1,5 +1,5 @@
 import time, copy
-
+# sample grid: 940020700001004009006000120000003010100000008070500000087000200600900300009080057
 grid = []
 
 # Prints out a formatted version of the current grid
@@ -16,58 +16,6 @@ def printGrid(grid):
 			else:
 				rowString += str(element) + " "
 		print(rowString)
-
-# Prints out a much larger version of the current grid (empty squares contain the possibilities in the corner, '?' in the bottom right
-# means there are more than four current possibilities)
-def printExpandedGrid(grid):
-	a = {}
-	for r in range(0,9):
-		for c in range(0,9):
-			l = findPossible(r,c,grid)
-			if len(l) > 4:
-				l = l[:3]
-				l.append("?")
-			a[(r,c)] = l
-
-	for r in range(0,9):
-		row1 = ""
-		row2 = ""
-		row3 = ""
-		for c in range(0,9):
-			l = a[(r,c)]
-			if c % 3 == 0 and c != 0:
-				row1 += " # "
-				row2 += " # "
-				row3 += " # "
-			elif c != 0:
-				row1 += "|"
-				row2 += "|"
-				row3 += "|"
-
-			if len(l) == 0:
-				row1 += "     "
-				row2 += "  " + str(grid[r][c]) + "  "
-				row3 += "     "
-			elif len(l) == 1:
-				row1 += str(l[0]) + "    "
-				row2 += "     "
-				row3 += "     "
-			elif len(l) >= 2:
-				row1 += str(l[0]) + "   " + str(l[1])
-				row2 += "     "
-				if len(l) == 2:
-					row3 += "     "
-				elif len(l) == 3:
-					row3 += str(l[2]) + "    "
-				elif len(l) == 4:
-					row3 += str(l[2]) + "   " + str(l[3])
-		if r % 3 == 0 and r != 0:
-			print("##########################################################")
-		elif r != 0:
-			print("------------------#-------------------#------------------")
-		print(row1)
-		print(row2)
-		print(row3)
 
 # This finds all possible values for a square by eliminating those in the box that
 # it's in, the row, and the column (naive)
@@ -186,7 +134,6 @@ def nextMove(grid,silent=False,depth=0,finish=False):
 # This checks if the grid is finished
 def hasMoves(grid):
 	return any(0 in row for row in grid)
-
 # This attempts to complete the grid by continually calling nextMove until it gets stuck or succeeds
 def complete(grid,depth=0):
 	moved = True
@@ -259,12 +206,10 @@ if len(grid) == 0:
 # Initialize variables
 time1 = 0
 
-c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
-while hasMoves(grid) and (len(c) == 0 or c == "p" or c == "c" or c == "g" or c[0] == "("):
+c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'c': Complete the grid (or attempt to)\n\t    '(r,c)': Prints the possible options for that row, column\n")
+while hasMoves(grid) and (len(c) == 0 or c == "p" or c == "c" or c[0] == "("):
 	if c == "p":
 		printGrid(grid)
-	elif c == "g":
-		printExpandedGrid(grid)
 	elif c == "c":
 		time1 = time.time()
 		if not complete(grid):
@@ -276,7 +221,7 @@ while hasMoves(grid) and (len(c) == 0 or c == "p" or c == "c" or c == "g" or c[0
 		nextMove(grid)
 
 	if hasMoves(grid):
-		c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'g': Print the current grid (large)\n\t'c': Complete the grid (or attempt to)\n\t'(r,c)': Prints the possible options for that row, column\n")
+		c = input("Controls:\n\t'Enter': Display the next move\n\t'p': Print the current grid (small)\n\t'c': Complete the grid (or attempt to)\n\t    '(r,c)': Prints the possible options for that row, column\n")
 	else:
 		time2 = time.time()
 		printGrid(grid)
